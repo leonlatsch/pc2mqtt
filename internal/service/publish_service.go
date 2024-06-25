@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/leonlatsch/windows-hass-bridge/internal/entities"
-	"github.com/leonlatsch/windows-hass-bridge/internal/mqtt_wrapper"
+	"github.com/leonlatsch/pc2mqtt/internal/entities"
+	"github.com/leonlatsch/pc2mqtt/internal/mqtt_wrapper"
 )
 
 type MqttPublisherService struct {

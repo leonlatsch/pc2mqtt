@@ -4,8 +4,8 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/leonlatsch/windows-hass-bridge/internal/appconfig"
-	"github.com/leonlatsch/windows-hass-bridge/internal/system"
+	"github.com/leonlatsch/pc2mqtt/internal/appconfig"
+	"github.com/leonlatsch/pc2mqtt/internal/system"
 )
 
 func GetEntities() []Entity {

@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/leonlatsch/windows-hass-bridge/internal/appconfig"
-	"github.com/leonlatsch/windows-hass-bridge/internal/entities"
-	"github.com/leonlatsch/windows-hass-bridge/internal/ext"
-	"github.com/leonlatsch/windows-hass-bridge/internal/mqtt_wrapper"
-	"github.com/leonlatsch/windows-hass-bridge/internal/service"
+	"github.com/leonlatsch/pc2mqtt/internal/appconfig"
+	"github.com/leonlatsch/pc2mqtt/internal/entities"
+	"github.com/leonlatsch/pc2mqtt/internal/ext"
+	"github.com/leonlatsch/pc2mqtt/internal/mqtt_wrapper"
+	"github.com/leonlatsch/pc2mqtt/internal/service"
 )
 
 func main() {

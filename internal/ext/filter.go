@@ -1,6 +1,6 @@
 package ext
 
-import "github.com/leonlatsch/windows-hass-bridge/internal/entities"
+import "github.com/leonlatsch/pc2mqtt/internal/entities"
 
 func FilterEntiiesWithCommands(entityList []entities.Entity) []entities.EntityWithCommand {
 	var result []entities.EntityWithCommand

@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/google/uuid"
-	"github.com/leonlatsch/windows-hass-bridge/internal/system"
+	"github.com/leonlatsch/pc2mqtt/internal/system"
 )
 
 const CONFIG_FILE_LOCATION = "config.json"
