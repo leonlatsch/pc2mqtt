@@ -1,0 +1,4 @@
+github.com/go-mqtt/mqtt v0.0.0-20210702165922-b33ea0451b0b h1:vm2f0/jmLkfNt4Dmni++I0mi5/2xNB4Ye2/Jj9Wao9o=
+github.com/go-mqtt/mqtt v0.0.0-20210702165922-b33ea0451b0b/go.mod h1:ayzudw2gSvvoYMzWZAx74WLzqCXQ+g4QoaoFGQye+aE=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
