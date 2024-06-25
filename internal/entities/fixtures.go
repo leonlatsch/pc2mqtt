@@ -12,7 +12,7 @@ func GetEntities() []Entity {
 	appConf := appconfig.RequireConfig()
 	entityList := []Entity{
 		BinarySensor{
-			DiscoveryTopic: "homeassistant/binary_sensor/" + appConf.DeviceId + "/" + appConf.DeviceName + "_sensor_power/config",
+			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/binary_sensor/" + appConf.DeviceId + "/" + appConf.DeviceName + "_sensor_power/config",
 			DiscoveryConfig: &Config{
 				Device:       GetFixDevice(),
 				Availability: GetFixAvailability(),
@@ -36,7 +36,7 @@ func GetEntities() []Entity {
 					log.Println(err)
 				}
 			},
-			DiscoveryTopic: "homeassistant/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_shutdown/config",
+			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_shutdown/config",
 			DiscoveryConfig: &Config{
 				Device:       GetFixDevice(),
 				Availability: GetFixAvailability(),
@@ -61,7 +61,7 @@ func GetEntities() []Entity {
 					log.Println(err)
 				}
 			},
-			DiscoveryTopic: "homeassistant/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_reboot/config",
+			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_reboot/config",
 			DiscoveryConfig: &Config{
 				Device:       GetFixDevice(),
 				Availability: GetFixAvailability(),
@@ -82,7 +82,7 @@ func GetEntities() []Entity {
 				Action: func() {
 					log.Println("Test button pressed")
 				},
-				DiscoveryTopic: "homeassistant/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_test/config",
+				DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_test/config",
 				DiscoveryConfig: &Config{
 					Device:       GetFixDevice(),
 					Availability: GetFixAvailability(),
