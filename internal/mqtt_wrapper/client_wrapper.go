@@ -2,11 +2,11 @@ package mqtt_wrapper
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"time"
 
 	"github.com/go-mqtt/mqtt"
+	"github.com/leonlatsch/pc2mqtt/internal/appconfig"
 )
 
 type MqttClientConfig struct {
@@ -33,7 +33,11 @@ func (client *MqttClientWrapper) Subscribe(topics ...string) chan Message {
 
 	// Send sub request
 	go func() {
-		log.Println("Subsribing to " + fmt.Sprint(len(topics)) + " topics")
+		if appconfig.RequireConfig().DebugMode {
+			for _, topic := range topics {
+				log.Println("DEBUG: Subscribing to " + topic)
+			}
+		}
 
 		err := client.InnerClient.Subscribe(nil, topics...)
 		if err != nil {
@@ -71,6 +75,9 @@ func (client *MqttClientWrapper) Subscribe(topics ...string) chan Message {
 }
 
 func (client *MqttClientWrapper) Publish(topic string, message []byte) error {
+	if appconfig.RequireConfig().DebugMode {
+		log.Println("DEBUG: PUB: " + topic)
+	}
 	return client.InnerClient.Publish(nil, message, topic)
 }
 

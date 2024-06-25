@@ -53,6 +53,11 @@ func main() {
 
 	for {
 		var message = <-messagesChan
+
+		if appConfig.DebugMode {
+			log.Println("DEBUG: REC: " + fmt.Sprintf("%v -> %v", message.Topic, message.Message))
+		}
+
 		for _, entity := range entitiesWithCommands {
 			if entity.GetDiscoveryConfig().CommandTopic == message.Topic {
 				entity.QueueAction()
