@@ -46,12 +46,12 @@ When first starting the application, a `config.json` will be created right next 
 
 | Parameter                   | Description                                                              | Default Value                    |
 |-----------------------------|--------------------------------------------------------------------------|----------------------------------|
-| `device_id`                 | A generated id to identify your device.                                   | Can be changed                   |
+| `device_id`                 | A generated id to identify your device.                                   | Generated. Can be changed        |
 | `device_name`               | How your device will be named in eg. homeassistant.                       | Defaults to hostname             |
 | `mqtt.host`                 | Your MQTT hostname eg. 192.168.0.10.                                      |                                  |
 | `mqtt.port`                 | Your MQTT port.                                                           |                                  |
 | `mqtt.username`             | Your MQTT username.                                                       |                                  |
 | `mqtt.password`             | Your MQTT password.                                                       |                                  |
 | `mqtt.auto_discovery_prefix`| The prefix used for the auto discovery messages.                          | `homeassistant`                  |
-| `debug_mode`                | Enabled debug mode. Prints more logs and adds a "test" button.             |                                  |
+| `debug_mode`                | Enabled debug mode. Prints more logs and adds a "test" button.             |false                              |
 
