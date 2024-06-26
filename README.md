@@ -34,18 +34,18 @@ When first starting the application, a `config.json` will be created right next 
     "mqtt": {
         "host": "<YOUR MQTT HOST>",
         "port": 1883,
-        "username": "<\u003cMQTT USER>",
-        "password": "<\u003cMQTT PASSWORD>",
+        "username": "<MQTT USER>",
+        "password": "<MQTT PASSWORD>",
         "auto_discovery_prefix": "homeassistant"
     },
     "debug_mode": false
 }
 ```
 
-- device_id: a generated id to identify your device. Can be changed to any unique value of your choice
-- deviec_name: How your device will be named in eg. homeassistant. Defaults to your hostname, can be changed to any value
-- mqtt.host: Your mqtt hostname eg. 192.168.0.10
-- mqtt.port: Your mqtt port
-- mqtt.username: Your mqtt username
-- mqtt.password: Your mqtt password
-- mqtt.auto_discovery_prefix: The prefix used for the auto discovery messages. Defaults to `homeassistant`. Can be changed to fit your needs
+- `device_id`: a generated id to identify your device. Can be changed to any unique value of your choice
+- `deviec_name`: How your device will be named in eg. homeassistant. Defaults to your hostname, can be changed to any value
+- `mqtt.host`: Your mqtt hostname eg. 192.168.0.10
+- `mqtt.port`: Your mqtt port
+- `mqtt.username`: Your mqtt username
+- `mqtt.password`: Your mqtt password
+- `mqtt.auto_discovery_prefix`: The prefix used for the auto discovery messages. Defaults to `homeassistant`. Can be changed to fit your needs
