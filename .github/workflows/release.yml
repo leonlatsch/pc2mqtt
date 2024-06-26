@@ -19,19 +19,14 @@ jobs:
         go-version: '1.19'
 
     - name: Build
-      run: go build -v wrapped-executable
+      run: go build -v -o pc2mqtt
 
     - name: Package
       run: |
-        mkdir build
-        mv wrapped-executable build/
-        cp win_service_wrapper/win_sw.xml build/pc2mqtt.xml
-        cp win_service_wrapper/win_sw.exe build/pc2mqtt.exe
-        mv build/ pc2mqtt/
-        zip pc2mqtt-linux.zip pc2mqtt/
+        tar xvzf pc2mqtt-linux.tar.gz pc2mqtt
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: pc2mqtt-linux
-        path: pc2mqtt-linux.zip 
+        path: pc2mqtt-linux.tar.gz
