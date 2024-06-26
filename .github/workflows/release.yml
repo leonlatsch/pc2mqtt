@@ -54,7 +54,7 @@ jobs:
         RENAME tmp pc2mqtt
 
         # Make this work on windows
-        powershell -Command "Compress-Archive -Path .\pc2mqtt\* -DestinationPath .\pc2mqtt.zip"
+        powershell -Command "Compress-Archive -Path .\pc2mqtt\* -DestinationPath .\pc2mqtt-windows.zip"
     - name: Upload Artifact
 
       uses: actions/upload-artifact@v2
