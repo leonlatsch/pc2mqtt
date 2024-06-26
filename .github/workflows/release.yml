@@ -50,7 +50,7 @@ jobs:
       run: |
         mkdir tmp
         MOVE wrapped.exe tmp
-        MOVE win_service_wrapper\winsw.exe tmp\pc2mqtt.exe
+        powershell -Command "Invoke-WebRequest -Uri https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe -OutFile tmp\pc2mqtt.exe"
         MOVE win_service_wrapper\winsw.xml tmp\pc2mqtt.xml
         RENAME tmp pc2mqtt
 
