@@ -24,8 +24,8 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: pc2mqtt
-        path: pc2mqtt-linux
+        name: pc2mqtt-linux
+        path: pc2mqtt
 
   build-windows:
     runs-on: windows-latest
