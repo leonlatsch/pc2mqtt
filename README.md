@@ -27,7 +27,7 @@ For windows pc2mqtt uses the [windows-service-wrapper](https://github.com/winsw/
 ## Config
 
 When first starting the application, a `config.json` will be created right next to it. It looks like this:
-´´´json
+```json
 {
     "device_id": "63fbeebb-f107-4903-ab36-6104b9d802b0",
     "device_name": "MY-PC-HOSTNAME",
@@ -40,7 +40,7 @@ When first starting the application, a `config.json` will be created right next 
     },
     "debug_mode": false
 }
-´´´
+```
 
 - device_id: a generated id to identify your device. Can be changed to any unique value of your choice
 - deviec_name: How your device will be named in eg. homeassistant. Defaults to your hostname, can be changed to any value
