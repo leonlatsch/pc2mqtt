@@ -24,6 +24,8 @@ For windows pc2mqtt uses the [windows-service-wrapper](https://github.com/winsw/
 2. Unzip it to dome directory of your choice
 3. In cmd run `pc2mqtt.exe install` and `pc2mqtt.exe start` to install and start it as a windows service
 
+Explaination: `wrapped.exe` is the actual binary. pc2mqtt.exe is the windows service wrapper which installs the service using the xml config file. For more info have a loot at the [windows-service-wrapper](https://github.com/winsw/winsw).
+
 ## Config
 
 When first starting the application, a `config.json` will be created right next to it. It looks like this:
@@ -49,7 +51,7 @@ When first starting the application, a `config.json` will be created right next 
 | `device_id`                 | A generated id to identify your device.                                   | Generated. Can be changed        |
 | `device_name`               | How your device will be named in eg. homeassistant.                       | Defaults to hostname             |
 | `mqtt.host`                 | Your MQTT hostname eg. 192.168.0.10.                                      |                                  |
-| `mqtt.port`                 | Your MQTT port.                                                           |                                  |
+| `mqtt.port`                 | Your MQTT port.                                                           | 1883                             |
 | `mqtt.username`             | Your MQTT username.                                                       |                                  |
 | `mqtt.password`             | Your MQTT password.                                                       |                                  |
 | `mqtt.auto_discovery_prefix`| The prefix used for the auto discovery messages.                          | `homeassistant`                  |
