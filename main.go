@@ -25,16 +25,7 @@ func main() {
 	appConfig := appconfig.RequireConfig()
 
 	// Test mqtt library
-	clientWrapper := mqtt_wrapper.CreateClientWrapper(&mqtt_wrapper.MqttClientConfig{
-		ClientId: "hass-bridge-" + appConfig.DeviceName,
-		Uri:      fmt.Sprintf("%v:%v", appConfig.Mqtt.Host, appConfig.Mqtt.Port),
-		Username: appConfig.Mqtt.Username,
-		Password: appConfig.Mqtt.Password,
-		Will: mqtt_wrapper.Message{
-			Topic:   entities.GetFixAvailability().Topic,
-			Message: entities.GetFixAvailability().PayloadNotAvailable,
-		},
-	})
+	clientWrapper := mqtt_wrapper.CreateClientWrapper()
 	publishService := service.MqttPublisherService{
 		Client: clientWrapper,
 	}

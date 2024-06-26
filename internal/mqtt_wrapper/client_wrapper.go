@@ -2,24 +2,16 @@ package mqtt_wrapper
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
 	"github.com/go-mqtt/mqtt"
 	"github.com/leonlatsch/pc2mqtt/internal/appconfig"
+	"github.com/leonlatsch/pc2mqtt/internal/entities"
 )
 
-type MqttClientConfig struct {
-	ClientId  string
-	Uri       string
-	Username  string
-	Password  string
-	SubTopics []string
-	Will      Message
-}
-
 type MqttClientWrapper struct {
-	Config      *MqttClientConfig
 	InnerClient *mqtt.Client
 }
 
@@ -81,12 +73,16 @@ func (client *MqttClientWrapper) Publish(topic string, message []byte) error {
 	return client.InnerClient.Publish(nil, message, topic)
 }
 
-func CreateClientWrapper(config *MqttClientConfig) *MqttClientWrapper {
-	innerClient, err := mqtt.VolatileSession(config.ClientId, &mqtt.Config{
-		Dialer:       mqtt.NewDialer("tcp", config.Uri),
+func CreateClientWrapper() *MqttClientWrapper {
+	appConf := appconfig.RequireConfig()
+	clientId := "pc2mqtt-" + appConf.DeviceName
+	uri := fmt.Sprintf("%v:%v", appConf.Mqtt.Host, appConf.Mqtt.Port)
+
+	innerClient, err := mqtt.VolatileSession(clientId, &mqtt.Config{
+		Dialer:       mqtt.NewDialer("tcp", uri),
 		PauseTimeout: 4 * time.Second,
-		UserName:     config.Username,
-		Password:     []byte(config.Password),
+		UserName:     appConf.Mqtt.Username,
+		Password:     []byte(appConf.Mqtt.Password),
 		Will: struct {
 			Topic       string
 			Message     []byte
@@ -94,8 +90,8 @@ func CreateClientWrapper(config *MqttClientConfig) *MqttClientWrapper {
 			AtLeastOnce bool
 			ExactlyOnce bool
 		}{
-			Topic:   config.Will.Topic,
-			Message: []byte(config.Will.Message),
+			Topic:   entities.GetFixAvailability().Topic,
+			Message: []byte(entities.GetFixAvailability().PayloadNotAvailable),
 			Retain:  true,
 		},
 	})
@@ -104,10 +100,9 @@ func CreateClientWrapper(config *MqttClientConfig) *MqttClientWrapper {
 		panic(err)
 	}
 
-	log.Println("Connecting to " + config.Uri)
+	log.Println("Connecting to " + uri)
 
 	return &MqttClientWrapper{
-		Config:      config,
 		InnerClient: innerClient,
 	}
 }
