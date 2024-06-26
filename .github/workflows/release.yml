@@ -22,7 +22,7 @@ jobs:
       run: go build -v -o pc2mqtt
 
     - name: Package
-      run: tar xvzf pc2mqtt-linux.tar.gz pc2mqtt
+      run: tar cvzf pc2mqtt-linux.tar.gz pc2mqtt
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
@@ -54,7 +54,6 @@ jobs:
         RENAME tmp pc2mqtt
 
         # Make this work on windows
-        tar xvzf pc2mqtt-linux.tar.gz pc2mqtt
         powershell -Command "Compress-Archive -Path .\pc2mqtt\* -DestinationPath .\pc2mqtt.zip"
     - name: Upload Artifact
 
