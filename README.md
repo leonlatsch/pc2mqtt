@@ -6,6 +6,13 @@ Control your PC or homeserver with homeassistant or any other MQTT enabled home 
 
 pc2mqtt run on your pc or homeserver and exposes its state and actions via MQTT.
 
+## Exposed MQTT Components
+- Power sensor
+- Shutdown button
+- Reboot button
+
+![homeassistant](.github/images/homeassistant.png)
+
 ## Getting Started / Installation
 
 > Installation of pc2mqtt works a little different on windows vs linux.
@@ -21,10 +28,10 @@ pc2mqtt run on your pc or homeserver and exposes its state and actions via MQTT.
 For windows pc2mqtt uses the [windows-service-wrapper](https://github.com/winsw/winsw).
 
 1. Download the latest windows zip archive from the releases
-2. Unzip it to dome directory of your choice
+2. Unzip it to a directory of your choice
 3. In cmd run `pc2mqtt.exe install` and `pc2mqtt.exe start` to install and start it as a windows service
 
-Explaination: `wrapped.exe` is the actual binary. pc2mqtt.exe is the windows service wrapper which installs the service using the xml config file. For more info have a loot at the [windows-service-wrapper](https://github.com/winsw/winsw).
+Explaination: `wrapped.exe` is the actual binary. pc2mqtt.exe is the windows service wrapper which installs the service using the xml config file. For more info have a look at the [windows-service-wrapper](https://github.com/winsw/winsw).
 
 ## Config
 
