@@ -50,10 +50,9 @@ jobs:
         mkdir tmp
         MOVE wrapped.exe tmp
         powershell -Command "Invoke-WebRequest -Uri https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe -OutFile tmp\pc2mqtt.exe"
-        MOVE winsw.xml tmp\pc2mqtt.xml
+        MOVE win_sw.xml tmp\pc2mqtt.xml
         RENAME tmp pc2mqtt
 
-        # Make this work on windows
         powershell -Command "Compress-Archive -Path .\pc2mqtt\* -DestinationPath .\pc2mqtt-windows.zip"
     - name: Upload Artifact
 
