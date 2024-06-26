@@ -30,3 +30,37 @@ jobs:
       with:
         name: pc2mqtt-linux
         path: pc2mqtt-linux.tar.gz
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.19'
+
+    - name: Build
+      shell: cmd
+      run: go build -v -o wrapped.exe
+
+    - name: Package
+      shell: cmd
+      run: |
+        mkdir tmp
+        MOVE wrapped.exe tmp
+        MOVE win_service_wrapper\winsw.exe tmp\pc2mqtt.exe
+        MOVE win_service_wrapper\winsw.xml tmp\pc2mqtt.xml
+        RENAME tmp pc2mqtt
+
+        # Make this work on windows
+        tar xvzf pc2mqtt-linux.tar.gz pc2mqtt
+        powershell -Command "Compress-Archive -Path .\pc2mqtt\* -DestinationPath .\pc2mqtt.zip"
+    - name: Upload Artifact
+
+      uses: actions/upload-artifact@v2
+      with:
+        name: pc2mqtt-linux
+        path: pc2mqtt-linux.zip
+
