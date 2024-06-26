@@ -21,14 +21,11 @@ jobs:
     - name: Build
       run: go build -v -o pc2mqtt
 
-    - name: Package
-      run: tar cvzf pc2mqtt-linux.tar.gz pc2mqtt
-
     - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: pc2mqtt-linux
-        path: pc2mqtt-linux.tar.gz
+        name: pc2mqtt
+        path: pc2mqtt-linux
 
   build-windows:
     runs-on: windows-latest
@@ -47,17 +44,15 @@ jobs:
     - name: Package
       shell: cmd
       run: |
-        mkdir tmp
-        MOVE wrapped.exe tmp
-        powershell -Command "Invoke-WebRequest -Uri https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe -OutFile tmp\pc2mqtt.exe"
-        MOVE win_sw.xml tmp\pc2mqtt.xml
-        RENAME tmp pc2mqtt
-
-        powershell -Command "Compress-Archive -Path .\pc2mqtt\* -DestinationPath .\pc2mqtt-windows.zip"
+        powershell -Command "Invoke-WebRequest -Uri https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe -OutFile .\pc2mqtt.exe"
+        rename win_sw.xml pc2mqtt.xml
     - name: Upload Artifact
 
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: pc2mqtt-windows
-        path: pc2mqtt-windows.zip
+        path: |
+          wrapped.exe
+          pc2mqtt.exe
+          pc2mqtt.xml
 
