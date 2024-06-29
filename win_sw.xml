@@ -9,4 +9,6 @@
     <!-- CAUTION: Don't put arguments here. Use <arguments> instead. -->
     <executable>%BASE%\wrapped.exe</executable>
 
+    <onfailure action="restart" delay="10 sec"/>
+
 </service>
