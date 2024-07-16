@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	log.Println("Running application")
+	log.Println("Starting application")
 
 	if err := appconfig.ValidateOrCreateConfig(); err != nil {
 		log.Println("Config not valid. Empty config was created")
@@ -24,7 +24,6 @@ func main() {
 	}
 	appConfig := appconfig.RequireConfig()
 
-	// Test mqtt library
 	clientWrapper := mqtt_wrapper.CreateClientWrapper()
 	publishService := service.MqttPublisherService{
 		Client: clientWrapper,
