@@ -6,7 +6,6 @@ import (
 
 	"github.com/leonlatsch/pc2mqtt/internal/appconfig"
 	"github.com/leonlatsch/pc2mqtt/internal/entities"
-	"github.com/leonlatsch/pc2mqtt/internal/ext"
 	"github.com/leonlatsch/pc2mqtt/internal/mqtt_wrapper"
 	"github.com/leonlatsch/pc2mqtt/internal/service"
 )
@@ -26,7 +25,7 @@ func main() {
 	}
 
 	entityList := entities.GetEntities()
-	entitiesWithCommands := ext.FilterEntiiesWithCommands(entityList)
+	entitiesWithCommands := entities.FilterEntiiesWithCommands(entityList)
 
 	publishService.PublishOnStartup(entityList)
 
