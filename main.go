@@ -14,13 +14,9 @@ import (
 func main() {
 	log.Println("Starting application")
 
-	if err := appconfig.ValidateOrCreateConfig(); err != nil {
-		log.Println("Config not valid. Empty config was created")
-		return
-	}
-
 	if err := appconfig.LoadConfig(); err != nil {
-		log.Panicln(err)
+		log.Println(err)
+		return
 	}
 	appConfig := appconfig.RequireConfig()
 

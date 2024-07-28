@@ -22,17 +22,6 @@ func RequireConfig() *AppConfig {
 	return localConfig
 }
 
-func ValidateOrCreateConfig() error {
-	if !configExists() {
-		if err := createEmptyConfig(); err != nil {
-			return err
-		}
-		return errors.New("Config does not exist. Created initial config")
-	}
-
-	return nil
-}
-
 func createEmptyConfig() error {
 	newEmptyConfig := AppConfig{
 		DeviceId:   uuid.New().String(),
@@ -75,6 +64,13 @@ func SaveConfig(conf AppConfig) error {
 }
 
 func LoadConfig() error {
+	if !configExists() {
+		if err := createEmptyConfig(); err != nil {
+			return err
+		}
+		return errors.New("Config does not exist. Created initial config")
+	}
+
 	var conf AppConfig
 	buf, err := os.ReadFile(CONFIG_FILE_LOCATION)
 	if err != nil {
