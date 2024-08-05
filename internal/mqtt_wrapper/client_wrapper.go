@@ -51,14 +51,11 @@ func (client *MqttClientWrapper) Subscribe(topics ...string) chan Message {
 
 				messageChan <- messageObj
 			case errors.Is(err, mqtt.ErrClosed):
-				log.Println(err)
-				return
+				log.Fatalln(err)
 			case mqtt.IsConnectionRefused(err):
-				log.Println(err)
-				time.Sleep(15 * time.Second)
+				log.Fatalln(err)
 			default:
-				log.Println(err)
-				time.Sleep(2 * time.Second)
+				log.Fatalln(err)
 			}
 		}
 	}()

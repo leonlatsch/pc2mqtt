@@ -30,8 +30,8 @@ func main() {
 	publishService.PublishOnStartup(entityList)
 
 	cmdTopics := make([]string, 0, len(entitiesWithCommands))
-	for _, k := range entitiesWithCommands {
-		cmdTopics = append(cmdTopics, k.GetDiscoveryConfig().CommandTopic)
+	for idx, ety := range entitiesWithCommands {
+		cmdTopics[idx] = ety.GetDiscoveryConfig().CommandTopic
 	}
 
 	messagesChan := clientWrapper.Subscribe(cmdTopics...)
