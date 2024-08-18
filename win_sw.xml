@@ -10,5 +10,6 @@
     <executable>%BASE%\wrapped.exe</executable>
 
     <onfailure action="restart" delay="10 sec"/>
+    <delayedAutoStart>true</delayedAutoStart>
 
 </service>
