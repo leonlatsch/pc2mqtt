@@ -9,8 +9,8 @@ import (
 	"github.com/leonlatsch/pc2mqtt/internal/system"
 )
 
-const CONFIG_FILE_LOCATION = "config.json"
-const CONFIG_FILE_MODE = 0644
+const configFileName = "config.json"
+const configFileMode = 0644
 
 var localConfig *AppConfig = nil
 
@@ -44,8 +44,7 @@ func createEmptyConfig() error {
 }
 
 func configExists() bool {
-	_, err := os.Stat(CONFIG_FILE_LOCATION)
-
+	_, err := os.Stat(configFileName)
 	return !os.IsNotExist(err)
 }
 
@@ -55,7 +54,7 @@ func SaveConfig(conf AppConfig) error {
 		return err
 	}
 
-	if err := os.WriteFile(CONFIG_FILE_LOCATION, confJson, CONFIG_FILE_MODE); err != nil {
+	if err := os.WriteFile(configFileName, confJson, configFileMode); err != nil {
 		return err
 	}
 
@@ -72,7 +71,7 @@ func LoadConfig() error {
 	}
 
 	var conf AppConfig
-	buf, err := os.ReadFile(CONFIG_FILE_LOCATION)
+	buf, err := os.ReadFile(configFileName)
 	if err != nil {
 		return err
 	}

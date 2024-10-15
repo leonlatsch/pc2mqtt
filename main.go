@@ -25,7 +25,7 @@ func main() {
 	}
 
 	entityList := entities.GetEntities()
-	entitiesWithCommands := entities.FilterEntiiesWithCommands(entityList)
+	entitiesWithCommands := entities.FilterEntitiesWithCommands(entityList)
 
 	publishService.PublishOnStartup(entityList)
 

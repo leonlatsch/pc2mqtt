@@ -12,12 +12,12 @@ type MqttPublisherService struct {
 	Client *mqtt_wrapper.MqttClientWrapper
 }
 
-func (service *MqttPublisherService) PublishOnStartup(entitList []entities.Entity) {
-	service.PublishAutoDiscoveryMessages(entitList)
+func (service *MqttPublisherService) PublishOnStartup(entityList []entities.Entity) {
+	service.PublishAutoDiscoveryMessages(entityList)
 	service.PublishAvailability()
 
-	sensors := []entities.BinarySensor{}
-	for _, entity := range entitList {
+	var sensors []entities.BinarySensor
+	for _, entity := range entityList {
 		switch v := entity.(type) {
 		case entities.BinarySensor:
 			sensors = append(sensors, v)
