@@ -2,7 +2,7 @@ package entities
 
 type Entity interface {
 	GetDiscoveryTopic() string
-	GetDiscoveryConfig() *Config
+	GetDiscoveryConfig() *DiscoveryConfig
 }
 
 type EntityWithCommand interface {
@@ -10,22 +10,23 @@ type EntityWithCommand interface {
 	QueueAction()
 }
 
+// https://www.home-assistant.io/integrations/binary_sensor.mqtt
 type BinarySensor struct {
 	DiscoveryTopic  string
-	DiscoveryConfig *Config
+	DiscoveryConfig *DiscoveryConfig
 }
 
 func (sensor BinarySensor) GetDiscoveryTopic() string {
 	return sensor.DiscoveryTopic
 }
 
-func (sensor BinarySensor) GetDiscoveryConfig() *Config {
+func (sensor BinarySensor) GetDiscoveryConfig() *DiscoveryConfig {
 	return sensor.DiscoveryConfig
 }
 
 type Button struct {
 	DiscoveryTopic  string
-	DiscoveryConfig *Config
+	DiscoveryConfig *DiscoveryConfig
 	Action          func()
 }
 
@@ -33,7 +34,7 @@ func (button Button) GetDiscoveryTopic() string {
 	return button.DiscoveryTopic
 }
 
-func (button Button) GetDiscoveryConfig() *Config {
+func (button Button) GetDiscoveryConfig() *DiscoveryConfig {
 	return button.DiscoveryConfig
 }
 

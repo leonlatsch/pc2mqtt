@@ -8,24 +8,36 @@ import (
 	"github.com/leonlatsch/pc2mqtt/internal/system"
 )
 
+const (
+	payloadOnline  = "online"
+	payloadOffline = "offline"
+)
+
 func GetEntities() []Entity {
 	appConf := appconfig.RequireConfig()
 	entityList := []Entity{
 		BinarySensor{
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/binary_sensor/" + appConf.DeviceId + "/" + appConf.DeviceName + "_sensor_power/config",
-			DiscoveryConfig: &Config{
-				Device:       GetFixDevice(),
-				Availability: GetFixAvailability(),
-				ObjectId:     appConf.DeviceName + "_sensor_power",
-				UniqueId:     appConf.DeviceName + "_sensor_power",
-				Name:         "Power",
-				Icon:         "mdi:power",
-				StateTopic:   appConf.DeviceName + "/binary_sensor/power/state",
-				Qos:          1,
+			DiscoveryConfig: &DiscoveryConfig{
+				Device: GetDevice(),
+				Availability: Availability{
+					Topic:               appConf.DeviceName + "/binary_sensor/availability",
+					PayloadAvailable:    payloadOnline,
+					PayloadNotAvailable: payloadOffline,
+				},
+				ObjectId:   appConf.DeviceName + "_sensor_power",
+				UniqueId:   appConf.DeviceName + "_sensor_power",
+				Name:       "Power",
+				Icon:       "mdi:power",
+				StateTopic: GetDeviceAvailability().Topic,
+				PayloadOn:  GetDeviceAvailability().PayloadAvailable,
+				PayloadOff: GetDeviceAvailability().PayloadNotAvailable,
+				Qos:        1,
 			},
 		},
 		Button{
 			Action: func() {
+				log.Println("Shutdown button pressed")
 				cmd, err := system.GetShutdownCommand()
 				if err != nil {
 					log.Println(err)
@@ -37,9 +49,9 @@ func GetEntities() []Entity {
 				}
 			},
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_shutdown/config",
-			DiscoveryConfig: &Config{
-				Device:       GetFixDevice(),
-				Availability: GetFixAvailability(),
+			DiscoveryConfig: &DiscoveryConfig{
+				Device:       GetDevice(),
+				Availability: GetDeviceAvailability(),
 				ObjectId:     appConf.DeviceName + "_button_shutdown",
 				UniqueId:     appConf.DeviceName + "_button_shutdown",
 				Name:         "Shutdown",
@@ -51,6 +63,7 @@ func GetEntities() []Entity {
 		},
 		Button{
 			Action: func() {
+				log.Println("Reboot button pressed")
 				cmd, err := system.GetRebootCommand()
 				if err != nil {
 					log.Println(err)
@@ -62,9 +75,9 @@ func GetEntities() []Entity {
 				}
 			},
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_reboot/config",
-			DiscoveryConfig: &Config{
-				Device:       GetFixDevice(),
-				Availability: GetFixAvailability(),
+			DiscoveryConfig: &DiscoveryConfig{
+				Device:       GetDevice(),
+				Availability: GetDeviceAvailability(),
 				ObjectId:     appConf.DeviceName + "_button_reboot",
 				UniqueId:     appConf.DeviceName + "_button_reboot",
 				Name:         "Reboot",
@@ -83,16 +96,15 @@ func GetEntities() []Entity {
 					log.Println("Test button pressed")
 				},
 				DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_test/config",
-				DiscoveryConfig: &Config{
-					Device:       GetFixDevice(),
-					Availability: GetFixAvailability(),
+				DiscoveryConfig: &DiscoveryConfig{
+					Device:       GetDevice(),
+					Availability: GetDeviceAvailability(),
 					ObjectId:     appConf.DeviceName + "_button_test",
 					UniqueId:     appConf.DeviceName + "_button_test",
 					Name:         "Test",
 					Icon:         "mdi:test-tube",
 					StateTopic:   appConf.DeviceName + "/button/test/state",
 					CommandTopic: appConf.DeviceName + "/button/test/command",
-					Qos:          1,
 				},
 			},
 		)
@@ -101,16 +113,16 @@ func GetEntities() []Entity {
 	return entityList
 }
 
-func GetFixAvailability() Availability {
+func GetDeviceAvailability() Availability {
 	appConf := appconfig.RequireConfig()
 	return Availability{
 		Topic:               appConf.DeviceName + "/state",
-		PayloadAvailable:    "online",
-		PayloadNotAvailable: "offline",
+		PayloadAvailable:    payloadOnline,
+		PayloadNotAvailable: payloadOffline,
 	}
 
 }
-func GetFixDevice() Device {
+func GetDevice() Device {
 	appConf := appconfig.RequireConfig()
 	return Device{
 		Identifiers:  appConf.DeviceId,
