@@ -17,7 +17,6 @@ func main() {
 	if err := appconfig.LoadConfig(); err != nil {
 		log.Fatalln(err)
 	}
-	appConf := appconfig.RequireConfig()
 
 	client := createClient()
 
@@ -27,99 +26,121 @@ func main() {
 		entityList := entities.GetEntities()
 		entitiesWithCommands := entities.FilterEntitiesWithCommands(entityList)
 
-		go func() {
-			// Send auto discovery config for all entities
-			for _, ety := range entityList {
-				configJson, err := json.Marshal(ety.GetDiscoveryConfig())
-				if err != nil {
-					log.Println(err)
-					continue
-				}
-
-				if err := client.PublishRetained(ctx.Done(), configJson, ety.GetDiscoveryTopic()); err != nil {
-					log.Println(err)
-					cancel()
-					return
-				}
-
-			}
-
-			// Send payload available for all entities
-			for _, ety := range entityList {
-				availability := ety.GetDiscoveryConfig().Availability
-				payload := []byte(availability.PayloadAvailable)
-				if err := client.PublishRetained(ctx.Done(), payload, availability.Topic); err != nil {
-					log.Println(err)
-					cancel()
-				}
-			}
-		}()
-
-		// Publish sensor state
-		go func() {
-			var sensors []entities.BinarySensor
-			for _, entity := range entityList {
-				switch v := entity.(type) {
-				case entities.BinarySensor:
-					sensors = append(sensors, v)
-				}
-			}
-
-			for _, sensor := range sensors {
-				topic := sensor.GetDiscoveryConfig().StateTopic
-				payload := []byte(sensor.DiscoveryConfig.PayloadOn)
-				if err := client.PublishRetained(ctx.Done(), payload, topic); err != nil {
-					log.Println(err)
-					cancel()
-					return
-				}
-			}
-		}()
-
-		// Subscribe to command topics
-		go func() {
-			cmdTopics := make([]string, 0, len(entitiesWithCommands))
-			for _, ety := range entitiesWithCommands {
-				cmdTopics = append(cmdTopics, ety.GetDiscoveryConfig().CommandTopic)
-			}
-
-			if err := client.Subscribe(ctx.Done(), cmdTopics...); err != nil {
-				log.Println(err)
-				cancel()
-			}
-		}()
+		go logWhenClientOnline(client)
 
 		go func() {
-			for {
-				message, topic, err := client.ReadSlices()
-
-				switch {
-				case err == nil:
-					top := string(topic)
-					mes := string(message)
-
-					if appConf.DebugMode {
-						log.Println("DEBUG: REC: " + top + " : " + mes)
-					}
-
-					for _, ety := range entitiesWithCommands {
-						if ety.GetDiscoveryConfig().CommandTopic == top {
-							ety.QueueAction()
-						}
-					}
-
-				default:
-					cancel()
-					return
-				}
-			}
+			// Wait with availability until config was sent
+			publishAutoDiscoveryConfigs(ctx, cancel, client, entityList)
+			publishAvailability(ctx, cancel, client, entityList)
 		}()
+
+		go publishSensorStates(ctx, cancel, client, entityList)
+		go subToCmdTopics(ctx, cancel, client, entitiesWithCommands)
+
+		go readMessages(cancel, client, entitiesWithCommands)
 
 		<-ctx.Done()
 		log.Println("Connection lost. Reconnecting in 5 seconds...")
 
 		time.Sleep(5 * time.Second)
 		cancel()
+	}
+}
+
+func logWhenClientOnline(client *mqtt.Client) {
+	appConf := appconfig.RequireConfig()
+	<-client.Online()
+	log.Printf("Conencted to %q", appConf.Mqtt.Host)
+}
+
+func publishAutoDiscoveryConfigs(ctx context.Context, cancel func(), client *mqtt.Client, entityList []entities.Entity) {
+	for _, ety := range entityList {
+		configJson, err := json.Marshal(ety.GetDiscoveryConfig())
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		if err := client.PublishRetained(ctx.Done(), configJson, ety.GetDiscoveryTopic()); err != nil {
+			log.Println(err)
+			cancel()
+			return
+		}
+	}
+
+	log.Println("Published auto discovery messages successfully")
+}
+
+func publishAvailability(ctx context.Context, cancel func(), client *mqtt.Client, entityList []entities.Entity) {
+	for _, ety := range entityList {
+		availability := ety.GetDiscoveryConfig().Availability
+		payload := []byte(availability.PayloadAvailable)
+		if err := client.PublishRetained(ctx.Done(), payload, availability.Topic); err != nil {
+			log.Println(err)
+			cancel()
+		}
+	}
+
+	log.Println("Published availability messages successfully")
+}
+
+func publishSensorStates(ctx context.Context, cancel func(), client *mqtt.Client, entityList []entities.Entity) {
+	var sensors []entities.BinarySensor
+	for _, entity := range entityList {
+		switch v := entity.(type) {
+		case entities.BinarySensor:
+			sensors = append(sensors, v)
+		}
+	}
+
+	for _, sensor := range sensors {
+		topic := sensor.GetDiscoveryConfig().StateTopic
+		payload := []byte(sensor.DiscoveryConfig.PayloadOn)
+		if err := client.PublishRetained(ctx.Done(), payload, topic); err != nil {
+			log.Println(err)
+			cancel()
+			return
+		}
+	}
+
+	debugLog("Published sensor state successfully")
+}
+
+func subToCmdTopics(ctx context.Context, cancel func(), client *mqtt.Client, entitiesWithCommands []entities.EntityWithCommand) {
+	cmdTopics := make([]string, 0, len(entitiesWithCommands))
+	for _, ety := range entitiesWithCommands {
+		cmdTopics = append(cmdTopics, ety.GetDiscoveryConfig().CommandTopic)
+	}
+
+	if err := client.Subscribe(ctx.Done(), cmdTopics...); err != nil {
+		log.Println(err)
+		cancel()
+	}
+
+	debugLog("Subscribed to command topic")
+}
+
+func readMessages(cancel func(), client *mqtt.Client, entitiesWithCommands []entities.EntityWithCommand) {
+	for {
+		message, topic, err := client.ReadSlices()
+
+		switch {
+		case err == nil:
+			top := string(topic)
+			mes := string(message)
+
+			debugLog("DEBUG: REC: " + top + " : " + mes)
+
+			for _, ety := range entitiesWithCommands {
+				if ety.GetDiscoveryConfig().CommandTopic == top {
+					ety.QueueAction()
+				}
+			}
+
+		default:
+			cancel()
+			return
+		}
 	}
 }
 
@@ -151,4 +172,10 @@ func createClient() *mqtt.Client {
 	}
 
 	return client
+}
+
+func debugLog(message string) {
+	if appconfig.RequireConfig().DebugMode {
+		log.Println(message)
+	}
 }
