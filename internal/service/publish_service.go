@@ -40,8 +40,8 @@ func (service *MqttPublisherService) PublishAutoDiscoveryMessages(entityList []e
 }
 
 func (service *MqttPublisherService) PublishAvailability() {
-	topic := entities.GetFixAvailability().Topic
-	payload := []byte(entities.GetFixAvailability().PayloadAvailable)
+	topic := entities.GetDeviceAvailability().Topic
+	payload := []byte(entities.GetDeviceAvailability().PayloadAvailable)
 	go service.Client.Publish(topic, payload)
 }
 

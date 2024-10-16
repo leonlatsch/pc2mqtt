@@ -14,14 +14,18 @@ func GetEntities() []Entity {
 		BinarySensor{
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/binary_sensor/" + appConf.DeviceId + "/" + appConf.DeviceName + "_sensor_power/config",
 			DiscoveryConfig: &Config{
-				Device:       GetFixDevice(),
-				Availability: GetFixAvailability(),
-				ObjectId:     appConf.DeviceName + "_sensor_power",
-				UniqueId:     appConf.DeviceName + "_sensor_power",
-				Name:         "Power",
-				Icon:         "mdi:power",
-				StateTopic:   appConf.DeviceName + "/binary_sensor/power/state",
-				Qos:          1,
+				Device: GetDevice(),
+				Availability: Availability{
+					Topic:               appConf.DeviceName + "/binary_sensor/availability",
+					PayloadAvailable:    "online",
+					PayloadNotAvailable: "offline",
+				},
+				ObjectId:   appConf.DeviceName + "_sensor_power",
+				Name:       "Power",
+				Icon:       "mdi:power",
+				StateTopic: appConf.DeviceName + "/binary_sensor/power/state",
+				PayloadOn:  GetDeviceAvailability().PayloadAvailable,
+				PayloadOff: GetDeviceAvailability().PayloadNotAvailable,
 			},
 		},
 		Button{
@@ -38,15 +42,13 @@ func GetEntities() []Entity {
 			},
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_shutdown/config",
 			DiscoveryConfig: &Config{
-				Device:       GetFixDevice(),
-				Availability: GetFixAvailability(),
+				Device:       GetDevice(),
+				Availability: GetDeviceAvailability(),
 				ObjectId:     appConf.DeviceName + "_button_shutdown",
-				UniqueId:     appConf.DeviceName + "_button_shutdown",
 				Name:         "Shutdown",
 				Icon:         "mdi:power",
 				StateTopic:   appConf.DeviceName + "/button/shutdown/state",
 				CommandTopic: appConf.DeviceName + "/button/shutdown/command",
-				Qos:          1,
 			},
 		},
 		Button{
@@ -63,15 +65,13 @@ func GetEntities() []Entity {
 			},
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_reboot/config",
 			DiscoveryConfig: &Config{
-				Device:       GetFixDevice(),
-				Availability: GetFixAvailability(),
+				Device:       GetDevice(),
+				Availability: GetDeviceAvailability(),
 				ObjectId:     appConf.DeviceName + "_button_reboot",
-				UniqueId:     appConf.DeviceName + "_button_reboot",
 				Name:         "Reboot",
 				Icon:         "mdi:restart",
 				StateTopic:   appConf.DeviceName + "/button/reboot/state",
 				CommandTopic: appConf.DeviceName + "/button/reboot/command",
-				Qos:          1,
 			},
 		},
 	}
@@ -84,15 +84,13 @@ func GetEntities() []Entity {
 				},
 				DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_test/config",
 				DiscoveryConfig: &Config{
-					Device:       GetFixDevice(),
-					Availability: GetFixAvailability(),
+					Device:       GetDevice(),
+					Availability: GetDeviceAvailability(),
 					ObjectId:     appConf.DeviceName + "_button_test",
-					UniqueId:     appConf.DeviceName + "_button_test",
 					Name:         "Test",
 					Icon:         "mdi:test-tube",
 					StateTopic:   appConf.DeviceName + "/button/test/state",
 					CommandTopic: appConf.DeviceName + "/button/test/command",
-					Qos:          1,
 				},
 			},
 		)
@@ -101,7 +99,7 @@ func GetEntities() []Entity {
 	return entityList
 }
 
-func GetFixAvailability() Availability {
+func GetDeviceAvailability() Availability {
 	appConf := appconfig.RequireConfig()
 	return Availability{
 		Topic:               appConf.DeviceName + "/state",
@@ -110,7 +108,7 @@ func GetFixAvailability() Availability {
 	}
 
 }
-func GetFixDevice() Device {
+func GetDevice() Device {
 	appConf := appconfig.RequireConfig()
 	return Device{
 		Identifiers:  appConf.DeviceId,

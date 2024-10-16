@@ -87,8 +87,8 @@ func CreateClientWrapper() *MqttClientWrapper {
 			AtLeastOnce bool
 			ExactlyOnce bool
 		}{
-			Topic:   entities.GetFixAvailability().Topic,
-			Message: []byte(entities.GetFixAvailability().PayloadNotAvailable),
+			Topic:   entities.GetDeviceAvailability().Topic,
+			Message: []byte(entities.GetDeviceAvailability().PayloadNotAvailable),
 			Retain:  true,
 		},
 	})

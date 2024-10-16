@@ -8,15 +8,9 @@ type Config struct {
 	Icon         string       `json:"icon"`
 	ObjectId     string       `json:"object_id"`
 	StateTopic   string       `json:"state_topic"`
-	UniqueId     string       `json:"unique_id"`
-	Qos          int          `json:"qos"`
+	PayloadOn    string       `json:"payload_on"`
+	PayloadOff   string       `json:"payload_off"`
 	Schema       string       `json:"schema"`
-}
-
-type Origin struct {
-	Name string `json:"name"`
-	SW   string `json:"sw"`
-	Url  string `json:"url"`
 }
 
 type Device struct {

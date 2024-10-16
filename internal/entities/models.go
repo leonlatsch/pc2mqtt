@@ -10,6 +10,7 @@ type EntityWithCommand interface {
 	QueueAction()
 }
 
+// https://www.home-assistant.io/integrations/binary_sensor.mqtt
 type BinarySensor struct {
 	DiscoveryTopic  string
 	DiscoveryConfig *Config
