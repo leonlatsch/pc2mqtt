@@ -36,7 +36,7 @@ func main() {
 		}()
 
 		go publishSensorStates(ctx, cancel, client, entityList)
-		go subToCmdTopics(ctx, cancel, client, entitiesWithCommands)
+		go subscribeToCommandTopics(ctx, cancel, client, entitiesWithCommands)
 
 		go readMessages(cancel, client, entitiesWithCommands)
 
@@ -107,7 +107,7 @@ func publishSensorStates(ctx context.Context, cancel func(), client *mqtt.Client
 	debugLog("Published sensor state successfully")
 }
 
-func subToCmdTopics(ctx context.Context, cancel func(), client *mqtt.Client, entitiesWithCommands []entities.EntityWithCommand) {
+func subscribeToCommandTopics(ctx context.Context, cancel func(), client *mqtt.Client, entitiesWithCommands []entities.EntityWithCommand) {
 	cmdTopics := make([]string, 0, len(entitiesWithCommands))
 	for _, ety := range entitiesWithCommands {
 		cmdTopics = append(cmdTopics, ety.GetDiscoveryConfig().CommandTopic)
