@@ -48,7 +48,7 @@ func main() {
 			for _, ety := range entityList {
 				availability := ety.GetDiscoveryConfig().Availability
 				payload := []byte(availability.PayloadAvailable)
-				if err := client.Publish(ctx.Done(), payload, availability.Topic); err != nil {
+				if err := client.PublishRetained(ctx.Done(), payload, availability.Topic); err != nil {
 					log.Println(err)
 					cancel()
 				}
@@ -68,7 +68,7 @@ func main() {
 			for _, sensor := range sensors {
 				topic := sensor.GetDiscoveryConfig().StateTopic
 				payload := []byte(sensor.DiscoveryConfig.PayloadOn)
-				if err := client.Publish(ctx.Done(), payload, topic); err != nil {
+				if err := client.PublishRetained(ctx.Done(), payload, topic); err != nil {
 					log.Println(err)
 					cancel()
 					return

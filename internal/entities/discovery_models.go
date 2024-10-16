@@ -10,6 +10,8 @@ type Config struct {
 	StateTopic   string       `json:"state_topic"`
 	PayloadOn    string       `json:"payload_on"`
 	PayloadOff   string       `json:"payload_off"`
+	UniqueId     string       `json:"unique_id"`
+	Qos          int          `json:"qos"`
 	Schema       string       `json:"schema"`
 }
 
