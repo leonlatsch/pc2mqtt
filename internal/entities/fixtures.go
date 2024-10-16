@@ -13,7 +13,7 @@ func GetEntities() []Entity {
 	entityList := []Entity{
 		BinarySensor{
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/binary_sensor/" + appConf.DeviceId + "/" + appConf.DeviceName + "_sensor_power/config",
-			DiscoveryConfig: &Config{
+			DiscoveryConfig: &DiscoveryConfig{
 				Device: GetDevice(),
 				Availability: Availability{
 					Topic:               appConf.DeviceName + "/binary_sensor/availability",
@@ -43,7 +43,7 @@ func GetEntities() []Entity {
 				}
 			},
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_shutdown/config",
-			DiscoveryConfig: &Config{
+			DiscoveryConfig: &DiscoveryConfig{
 				Device:       GetDevice(),
 				Availability: GetDeviceAvailability(),
 				ObjectId:     appConf.DeviceName + "_button_shutdown",
@@ -68,7 +68,7 @@ func GetEntities() []Entity {
 				}
 			},
 			DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_reboot/config",
-			DiscoveryConfig: &Config{
+			DiscoveryConfig: &DiscoveryConfig{
 				Device:       GetDevice(),
 				Availability: GetDeviceAvailability(),
 				ObjectId:     appConf.DeviceName + "_button_reboot",
@@ -89,7 +89,7 @@ func GetEntities() []Entity {
 					log.Println("Test button pressed")
 				},
 				DiscoveryTopic: appConf.Mqtt.AutoDiscoveryPrefix + "/button/" + appConf.DeviceId + "/" + appConf.DeviceName + "_button_test/config",
-				DiscoveryConfig: &Config{
+				DiscoveryConfig: &DiscoveryConfig{
 					Device:       GetDevice(),
 					Availability: GetDeviceAvailability(),
 					ObjectId:     appConf.DeviceName + "_button_test",

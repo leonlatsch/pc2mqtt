@@ -1,6 +1,6 @@
 package entities
 
-type Config struct {
+type DiscoveryConfig struct {
 	Device       Device       `json:"device"`
 	Availability Availability `json:"availability"`
 	CommandTopic string       `json:"command_topic"`

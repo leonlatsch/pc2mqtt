@@ -27,10 +27,10 @@ func createEmptyConfig() error {
 		DeviceId:   uuid.New().String(),
 		DeviceName: system.Hostname(),
 		Mqtt: MqttAppConfig{
-			Host:                "<YOUR MQTT HOST>",
+			Host:                "YOUR MQTT HOST",
 			Port:                1883,
-			Username:            "<MQTT USER>",
-			Password:            "<MQTT PASSWORD>",
+			Username:            "MQTT USER",
+			Password:            "MQTT PASSWORD",
 			AutoDiscoveryPrefix: "homeassistant",
 		},
 		DebugMode: false,
