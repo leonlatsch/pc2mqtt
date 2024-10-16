@@ -21,6 +21,7 @@ func main() {
 	client := createClient()
 
 	for {
+		// Main context. Cancel to stop all goroutines and retry connection
 		ctx, cancel := context.WithCancel(context.Background())
 
 		entityList := entities.GetEntities()
@@ -50,7 +51,7 @@ func main() {
 func logWhenClientOnline(client *mqtt.Client) {
 	appConf := appconfig.RequireConfig()
 	<-client.Online()
-	log.Printf("Conencted to %q", appConf.Mqtt.Host)
+	log.Printf("Conencted to %q:%d", appConf.Mqtt.Host, appConf.Mqtt.Port)
 }
 
 func publishAutoDiscoveryConfigs(ctx context.Context, cancel func(), client *mqtt.Client, entityList []entities.Entity) {
@@ -68,7 +69,7 @@ func publishAutoDiscoveryConfigs(ctx context.Context, cancel func(), client *mqt
 		}
 	}
 
-	log.Println("Published auto discovery messages successfully")
+	debugLog("Published auto discovery messages successfully")
 }
 
 func publishAvailability(ctx context.Context, cancel func(), client *mqtt.Client, entityList []entities.Entity) {
@@ -81,7 +82,7 @@ func publishAvailability(ctx context.Context, cancel func(), client *mqtt.Client
 		}
 	}
 
-	log.Println("Published availability messages successfully")
+	debugLog("Published availability messages successfully")
 }
 
 func publishSensorStates(ctx context.Context, cancel func(), client *mqtt.Client, entityList []entities.Entity) {
@@ -117,6 +118,7 @@ func subToCmdTopics(ctx context.Context, cancel func(), client *mqtt.Client, ent
 		cancel()
 	}
 
+	log.Println("Ready to receive commands")
 	debugLog("Subscribed to command topic")
 }
 

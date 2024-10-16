@@ -32,6 +32,7 @@ func GetEntities() []Entity {
 		},
 		Button{
 			Action: func() {
+				log.Println("Shutdown button pressed")
 				cmd, err := system.GetShutdownCommand()
 				if err != nil {
 					log.Println(err)
@@ -57,6 +58,7 @@ func GetEntities() []Entity {
 		},
 		Button{
 			Action: func() {
+				log.Println("Reboot button pressed")
 				cmd, err := system.GetRebootCommand()
 				if err != nil {
 					log.Println(err)
