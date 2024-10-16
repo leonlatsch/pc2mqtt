@@ -8,6 +8,11 @@ import (
 	"github.com/leonlatsch/pc2mqtt/internal/system"
 )
 
+const (
+	payloadOnline  = "online"
+	payloadOffline = "offline"
+)
+
 func GetEntities() []Entity {
 	appConf := appconfig.RequireConfig()
 	entityList := []Entity{
@@ -17,8 +22,8 @@ func GetEntities() []Entity {
 				Device: GetDevice(),
 				Availability: Availability{
 					Topic:               appConf.DeviceName + "/binary_sensor/availability",
-					PayloadAvailable:    "online",
-					PayloadNotAvailable: "offline",
+					PayloadAvailable:    payloadOnline,
+					PayloadNotAvailable: payloadOffline,
 				},
 				ObjectId:   appConf.DeviceName + "_sensor_power",
 				UniqueId:   appConf.DeviceName + "_sensor_power",
@@ -112,8 +117,8 @@ func GetDeviceAvailability() Availability {
 	appConf := appconfig.RequireConfig()
 	return Availability{
 		Topic:               appConf.DeviceName + "/state",
-		PayloadAvailable:    "online",
-		PayloadNotAvailable: "offline",
+		PayloadAvailable:    payloadOnline,
+		PayloadNotAvailable: payloadOffline,
 	}
 
 }
